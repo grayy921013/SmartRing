@@ -37,7 +37,7 @@ i = 0
 t = WorkerThread()
 t.start()
 
-while i < 10:
+while i < 25:
     input("#" + str(i) + " ready? ")
     f = open(char + "/" + str(datetime.now()), "w+")
     t.f = f
