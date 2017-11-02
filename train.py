@@ -3,6 +3,7 @@ import os
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
+from keras.layers import Dropout
 from keras.preprocessing import sequence
 from sklearn.utils import shuffle
 
@@ -28,11 +29,13 @@ X_test = X[train_size:, :, :]
 Y_test = Y[train_size:]
 model = Sequential()
 model.add(LSTM(output_dim=4, input_shape=(max_review_length, 6), return_sequences=True))
+model.add(Dropout(0.2))
 model.add(LSTM(100))
+model.add(Dropout(0.2))
 model.add(Dense(10, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 print(model.summary())
-model.fit(X_train, Y_train, nb_epoch=200, batch_size=64)
+model.fit(X_train, Y_train, nb_epoch=100, batch_size=64)
 # Final evaluation of the model
 scores = model.evaluate(X_test, Y_test, verbose=0)
 print("Accuracy: %.2f%%" % (scores[1]*100))
