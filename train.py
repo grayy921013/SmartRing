@@ -20,10 +20,12 @@ Y = numpy.asarray(Y)
 max_review_length = 200
 X = sequence.pad_sequences(X, maxlen=max_review_length)
 X, Y = shuffle(X, Y, random_state=0)
-X_train = X[:90, :, :]
-Y_train = Y[:90, :]
-X_test = X[90:, :, :]
-Y_test = Y[90:, :]
+total_size = X.shape[0]
+train_size = int(total_size * 0.8)
+X_train = X[:train_size, :, :]
+Y_train = Y[:train_size]
+X_test = X[train_size:, :, :]
+Y_test = Y[train_size:]
 model = Sequential()
 model.add(LSTM(output_dim=4, input_shape=(max_review_length, 6), return_sequences=True))
 model.add(LSTM(100))
