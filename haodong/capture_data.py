@@ -1,6 +1,5 @@
 #!/usr/local/bin/python3
 import serial
-
 import os
 from datetime import datetime
 import threading
@@ -9,9 +8,9 @@ import threading
 ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
 name = input("Enter the character: ")
 if len(name) != 1:
-    print("wrong length")
-    exit()
-char = name.upper()
+   print("wrong length")
+   exit()
+char = name
 if not os.path.exists(char):
     os.makedirs(char)
 
@@ -40,10 +39,10 @@ t.start()
 
 while i < 25:
     input("#" + str(i) + " ready? ")
-    f = open(char + "/" + str(datetime.now()), "w+")
+    f = open("0/" + str(datetime.now()), "w+")
     t.f = f
-    input("finish?")
-    print("Goodbye!")
+    #input("finish?")
+    #print("Goodbye!")
     t.pause()
     i += 1
 t.kill()
