@@ -1,5 +1,6 @@
 import preproc
 import model
+import data
 import tensorflow as tf
 from keras.backend.tensorflow_backend import set_session
 from keras.callbacks import TensorBoard
@@ -9,7 +10,7 @@ from keras.callbacks import TensorBoard
 # config.gpu_options.per_process_gpu_memory_fraction = 0.1
 # set_session(tf.Session(config=config))
 
-X_train, Y_train, X_test, Y_test = preproc.get_train_test_npy()
+X_train, Y_train, X_test, Y_test = data.get_train_test_npy()
 model = model.get_model()
 
 print(model.summary())
