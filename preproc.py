@@ -19,8 +19,8 @@ def gen_scale_data():
 def gen_rounding_data():
     X_train = np.load('X_train.npy')
     X_test = np.load('X_test.npy')
-    np.save('X_train_rounded', X_train // 100)
-    np.save('X_test_rounded', X_test // 100)
+    np.save('X_train_rounded', np.round(X_train/100).astype(int))
+    np.save('X_test_rounded', np.round(X_test/100).astype(int))
     print ('gen_rounding_data done')
 
 

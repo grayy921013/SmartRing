@@ -11,15 +11,16 @@ from keras.callbacks import TensorBoard
 # set_session(tf.Session(config=config))
 
 X_train, Y_train, X_test, Y_test = data.get_train_test_npy()
-model = model.get_model()
+model = model.get_model('round')
 
 print(model.summary())
 callbacks = [
-    TensorBoard(log_dir='./logs/run_raw', histogram_freq=0, batch_size=32,
+    TensorBoard(log_dir='./logs/run_round', histogram_freq=0, batch_size=32,
                 write_graph=True, write_grads=False, write_images=False,
                 embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None),
 ]
 model.fit(X_train, Y_train, nb_epoch=1000, batch_size=512, validation_data=(X_test, Y_test), callbacks=callbacks)
 # Final evaluation of the model
 scores = model.evaluate(X_test, Y_test, verbose=0)
+model.save('round')
 print("Accuracy: %.2f%%" % (scores[1]*100))
