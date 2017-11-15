@@ -56,3 +56,12 @@ def get_train_test_scale_npy():
     Y_test = numpy.load('Y_test.npy')
     print ('use scale data as input')
     return X_train, Y_train, X_test, Y_test
+
+
+def get_data(data):
+    if data == "round":
+        return get_train_test_rounded_npy()
+    elif data == "scale":
+        return get_train_test_scale_npy()
+    else:
+        return get_train_test_npy()
