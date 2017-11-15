@@ -44,6 +44,7 @@ while i < 25:
     t.f = f
     input("finish?")
     print("Goodbye!")
+    t.f.close()
     t.pause()
     i += 1
 t.kill()
