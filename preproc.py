@@ -31,3 +31,11 @@ def get_train_test():
     X_test = X[train_size:, :, :]
     Y_test = Y[train_size:]
     return X_train, Y_train, X_test, Y_test
+
+
+def get_train_test_npy():
+    X_train = numpy.load('X_train.npy')
+    X_test = numpy.load('X_test.npy')
+    Y_train = numpy.load('Y_train.npy')
+    Y_test = numpy.load('Y_test.npy')
+    return X_train, Y_train, X_test, Y_test
