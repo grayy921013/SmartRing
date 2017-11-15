@@ -10,7 +10,7 @@ from keras.callbacks import TensorBoard
 # config.gpu_options.per_process_gpu_memory_fraction = 0.1
 # set_session(tf.Session(config=config))
 
-X_train, Y_train, X_test, Y_test = data.get_train_test_npy()
+X_train, Y_train, X_test, Y_test = data.get_train_test_rounded_npy()
 model = model.get_model('round')
 
 print(model.summary())

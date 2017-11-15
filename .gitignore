@@ -106,3 +106,5 @@ ENV/
 
 # logs
 logs/
+
+.DS_Store
