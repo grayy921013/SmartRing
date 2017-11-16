@@ -44,15 +44,15 @@ class WorkerThread(threading.Thread):
 
 t = WorkerThread(array)
 t.start()
+model = load_model(model_name)
 
 while True:
     input(" ready? ")
     t.collect(True)
     input("finish?")
-    print(array)
+    X_test = np.asarray(array)
+    res = model.predict_classes(X_test, batch_size=config.batch_size, verbose=0)
+    print(res[0])
     t.collect(False)
     t.clear()
 
-# model = load_model(model_name)
-# res = model.predict_classes(x_test[0], batch_size=config.batch_size, verbose=0)
-# print (res[0])
