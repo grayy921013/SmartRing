@@ -18,6 +18,15 @@ def get_raw_input():
     Y = numpy.asarray(Y)
     return X,Y
 
+def get_from_test_folder():
+    files = os.listdir('test')
+    X = []
+    for file in files:
+        X.append(numpy.loadtxt(open("test/" + file, "rb"), delimiter=","))
+    X = numpy.asarray(X)
+    X = sequence.pad_sequences(X, maxlen=config.max_review_length)
+
+    return X,
 
 def get_train_test():
     X,Y = get_raw_input()
