@@ -27,8 +27,8 @@ class WorkerThread(threading.Thread):
 
     def run(self):
         while True:
+            data = ser.readline().decode("utf-8")
             with self.lock:
-                data = ser.readline().decode("utf-8")
                 if self.f:
                     f.write(data)
                 if self.quit:
