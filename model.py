@@ -24,13 +24,3 @@ def default_model(hps):
     model.add(Dense(10, activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
     return model
-
-def default_model():
-    model = Sequential()
-    model.add(LSTM(output_dim=4, input_shape=(config.max_review_length, 6), return_sequences=True))
-    model.add(Dropout(0.2))
-    model.add(LSTM(100))
-    model.add(Dropout(0.2))
-    model.add(Dense(10, activation='softmax'))
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    return model
