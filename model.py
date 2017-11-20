@@ -18,11 +18,13 @@ def fork (model, n=2):
         forks.append(f)
     return forks
 
-def get_model(hps = None, TAG = None, bidirection=False):
+def get_model(hps = None, TAG = None, bidirection=False, multiple=False):
     if TAG is None:
         print ('use default model')
     if hps is None:
         return default_model()
+    if multiple:
+        return multiple_rnn(hps)
     if bidirection:
         return bidirectional_model(hps)
     return default_model(hps)
@@ -52,4 +54,21 @@ def bidirectional_model(hps):
     #model.add(Activation('softmax'))
     #sgd = SGD(lr=0.1, decay=1e-5, momentum=0.9, nesterov=True)
     #model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
+    return model
+
+
+def multiple_rnn(hps):
+    model = Sequential()
+    model.add(Bidirectional(LSTM(output_dim=hps[0], return_sequences=True, stateful=True),
+                            input_shape=(config.max_review_length, 6),
+                            merge_mode='concat'))
+    model.add(LSTM(32, return_sequences=True, stateful=True))
+    model.add(Dropout(hps[1]))
+    model.add(LSTM(32, stateful=True))
+    model.add(Dropout(hps[3]))
+    model.add(Dense(10, activation='softmax'))
+
+    model.compile(loss='categorical_crossentropy',
+                  optimizer='rmsprop',
+                  metrics=['accuracy'])
     return model

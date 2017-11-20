@@ -21,7 +21,7 @@ for i in range(2, len(sys.argv)):
         hps[i - 2] = float(sys.argv[i])
 
 print("hyperparameters: " + str(hps))
-model = model.get_model(hps, bidirection=True)
+model = model.get_model(hps, multiple=True)
 
 print(model.summary())
 callbacks = [
