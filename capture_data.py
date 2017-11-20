@@ -6,7 +6,7 @@ from datetime import datetime
 import threading
 
 
-ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
+ser = serial.Serial('/dev/cu.usbmodem1421', 9600)
 name = input("Enter the character: ")
 if len(name) != 1:
     print("wrong length")
