@@ -82,7 +82,7 @@ def add_noise(X, Y):
         for j in range(times):
             x.append(X[i] + noises[i * times + j])
     x = numpy.array(x)
-    return x.astype(int), y.astype(int)
+    return x.astype(int), y.astype(float)
 
 
 def get_data(data):
