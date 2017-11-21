@@ -12,6 +12,10 @@ import config
 
 print(sys.argv)
 X_train, Y_train, X_test, Y_test = data.get_data(sys.argv[1])
+
+# data augmentation via adding noises
+X_train, Y_train = data.add_noise(X_train, Y_train)
+
 hps = [4, 0.5, 100, 0.5]
 name = sys.argv[1] + "_" + '_'.join(str(x) for x in hps)
 for i in range(2, len(sys.argv)):

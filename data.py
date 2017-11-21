@@ -4,6 +4,7 @@ from keras.preprocessing import sequence
 from sklearn.utils import shuffle
 import config
 
+
 def get_raw_input():
     X = []
     Y = []
@@ -16,7 +17,8 @@ def get_raw_input():
             Y.append(y)
     X = numpy.asarray(X)
     Y = numpy.asarray(Y)
-    return X,Y
+    return X, Y
+
 
 def get_from_test_folder():
     files = os.listdir('test')
@@ -28,8 +30,9 @@ def get_from_test_folder():
 
     return X,
 
+
 def get_train_test():
-    X,Y = get_raw_input()
+    X, Y = get_raw_input()
     X = sequence.pad_sequences(X, maxlen=config.max_review_length)
     X, Y = shuffle(X, Y, random_state=0)
     total_size = X.shape[0]
@@ -54,7 +57,7 @@ def get_train_test_rounded_npy():
     X_test = numpy.load('X_test_rounded.npy')
     Y_train = numpy.load('Y_train.npy')
     Y_test = numpy.load('Y_test.npy')
-    print ('use rounded data as input')
+    print('use rounded data as input')
     return X_train, Y_train, X_test, Y_test
 
 
@@ -63,8 +66,23 @@ def get_train_test_scale_npy():
     X_test = numpy.load('X_test.max-min-abs-scale.npy')
     Y_train = numpy.load('Y_train.npy')
     Y_test = numpy.load('Y_test.npy')
-    print ('use scale data as input')
+    print('use scale data as input')
     return X_train, Y_train, X_test, Y_test
+
+
+def add_noise(X, Y):
+    y = numpy.repeat(Y, 10, axis=0)
+    size = len(X)
+    times = 10
+    max_len = config.max_review_length
+    noise = [numpy.random.normal(0, 60, 6 * max_len).astype(int).reshape(max_len, 6) for i in range(size * times)]
+    noises = numpy.array(noise)
+    x = []
+    for i in range(len(X)):
+        for j in range(times):
+            x.append(X[i] + noises[i * times + j])
+    x = numpy.array(x)
+    return x.astype(int), y.astype(int)
 
 
 def get_data(data):
