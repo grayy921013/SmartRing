@@ -59,11 +59,11 @@ def bidirectional_model(hps):
 
 def multiple_rnn(hps):
     model = Sequential()
-    model.add(Bidirectional(LSTM(output_dim=hps[0], return_sequences=True, stateful=True,
-                                 input_shape=(config.max_review_length, 6)),merge_mode='concat'))
-    model.add(LSTM(32, return_sequences=True, stateful=True))
+    model.add(LSTM(output_dim=hps[0], return_sequences=True, 
+                                 input_shape=(config.max_review_length, 6)))
+    model.add(LSTM(32, return_sequences=True))
     model.add(Dropout(hps[1]))
-    model.add(LSTM(32, stateful=True))
+    model.add(LSTM(32))
     model.add(Dropout(hps[3]))
     model.add(Dense(10, activation='softmax'))
 
@@ -71,3 +71,4 @@ def multiple_rnn(hps):
                   optimizer='rmsprop',
                   metrics=['accuracy'])
     return model
+
