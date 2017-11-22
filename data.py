@@ -27,7 +27,6 @@ def get_from_test_folder():
         X.append(numpy.loadtxt(open("test/" + file, "rb"), delimiter=","))
     X = numpy.asarray(X)
     X = sequence.pad_sequences(X, maxlen=config.max_review_length)
-
     return X,
 
 

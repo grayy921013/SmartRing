@@ -10,8 +10,13 @@ from keras.callbacks import TensorBoard
 # config.gpu_options.per_process_gpu_memory_fraction = 0.1
 # set_session(tf.Session(config=config))
 
-X_train, Y_train, X_test, Y_test = data.get_train_test_npy()
-model = model.get_model()
+X_train, Y_train, X_test, Y_test = data.get_train_test()
+print (X_train.shape)
+print (Y_train.shape)
+print (X_test.shape)
+print (Y_test.shape)
+
+model = model.get_model(TAG = 'best')
 
 print(model.summary())
 callbacks = [
@@ -22,5 +27,5 @@ callbacks = [
 model.fit(X_train, Y_train, nb_epoch=1000, batch_size=512, validation_data=(X_test, Y_test), callbacks=callbacks)
 # Final evaluation of the model
 scores = model.evaluate(X_test, Y_test, verbose=0)
-print("Accuracy: %.2f%%" % (scores[1]*100))
+print("Accuracy: %.2f%%" % (scores[1] * 100))
 model.save("model_default.model")

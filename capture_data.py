@@ -4,9 +4,10 @@ import serial
 import os
 from datetime import datetime
 import threading
+import time
 
+lock = threading.RLock()
 
-ser = serial.Serial('/dev/cu.usbmodem1421', 9600)
 name = input("Enter the character: ")
 if len(name) != 1:
     print("wrong length")
@@ -19,33 +20,33 @@ if not os.path.exists(char):
 
 
 class WorkerThread(threading.Thread):
+
     def __init__(self):
         super(WorkerThread, self).__init__()
         self.f = None
-        self.quit = False
-        self.lock = threading.Lock()
+        self.ser = serial.Serial('/dev/cu.usbmodem1411', 9600)
+        self.running = True
 
     def run(self):
-        while True:
-            data = ser.readline().decode("utf-8")
-            with self.lock:
-                if self.f:
-                    f.write(data)
-                if self.quit:
-                    return
+        while self.running:
+            data = self.ser.readline().decode("utf-8")
+            lock.acquire()
+            if self.f:
+                f.write(data)
+            lock.release()
 
     def pause(self):
-        with self.lock:
-            self.f.close()
-            self.f = None
+        lock.acquire()
+        self.f.close()
+        self.f = None
+        lock.release()
 
     def kill(self):
-        with self.lock:
-            self.quit = True
+        print ("kill")
+        self.running = False
 
     def set_file(self, f):
-        with self.lock:
-            self.f = f
+        self.f = f
 
 i = 0
 t = WorkerThread()
@@ -59,4 +60,5 @@ while i < count:
     print("Goodbye!")
     t.pause()
     i += 1
+
 t.kill()
