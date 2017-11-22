@@ -12,7 +12,11 @@ import config
 
 print(sys.argv)
 X_train, Y_train, X_test, Y_test = data.get_data(sys.argv[1])
-hps = [4, 0.2, 100, 0.2]
+
+# data augmentation via adding noises
+X_train, Y_train = data.add_noise(X_train, Y_train)
+
+hps = [4, 0.5, 100, 0.5]
 name = sys.argv[1] + "_" + '_'.join(str(x) for x in hps)
 for i in range(2, len(sys.argv)):
     if i % 2 == 0:
@@ -21,7 +25,7 @@ for i in range(2, len(sys.argv)):
         hps[i - 2] = float(sys.argv[i])
 
 print("hyperparameters: " + str(hps))
-model = model.get_model(hps)
+model = model.get_model(hps, multiple=True)
 
 print(model.summary())
 callbacks = [
@@ -29,7 +33,7 @@ callbacks = [
                 write_graph=True, write_grads=False, write_images=False,
                 embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None),
 ]
-model.fit(X_train, Y_train, nb_epoch=1000, batch_size=512, validation_data=(X_test, Y_test), callbacks=callbacks)
+model.fit(X_train, Y_train, nb_epoch=1000, batch_size=320, validation_data=(X_test, Y_test), callbacks=callbacks)
 # Final evaluation of the model
 scores = model.evaluate(X_test, Y_test, verbose=0)
 model.save('model_' + name + ".model")
