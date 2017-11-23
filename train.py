@@ -39,7 +39,7 @@ callbacks = [
                 embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None),
     EarlyStopping(monitor='val_loss',
                   min_delta=0,
-                  patience=10,
+                  patience=30,
                   verbose=0, mode='auto'),
 ]
 model.fit(X_train, Y_train, nb_epoch=1000, batch_size=320, validation_data=(X_val, Y_val), callbacks=callbacks)
