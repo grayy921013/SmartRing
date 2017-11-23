@@ -10,14 +10,18 @@ import config
 # config.gpu_options.per_process_gpu_memory_fraction = 0.1
 # set_session(tf.Session(config=config))
 
+data_mode = "raw"
 print(sys.argv)
-X_train, Y_train, X_test, Y_test = data.get_data(sys.argv[1])
+if len(sys.argv) > 1:
+    data_mode = sys.argv[1]
+
+X_train, Y_train, X_test, Y_test = data.get_data(data_mode)
 
 # data augmentation via adding noises
 X_train, Y_train = data.add_noise(X_train, Y_train)
 
 hps = [4, 0.5, 100, 0.5]
-name = sys.argv[1] + "_" + '_'.join(str(x) for x in hps)
+name = data_mode + "_" + '_'.join(str(x) for x in hps)
 for i in range(2, len(sys.argv)):
     if i % 2 == 0:
         hps[i - 2] = int(sys.argv[i])
