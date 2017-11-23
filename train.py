@@ -16,7 +16,7 @@ print(sys.argv)
 if len(sys.argv) > 1:
     data_mode = sys.argv[1]
 
-X_train, Y_train, X_val, Y_val, X_test, Y_test = data.get_full_data_npy()
+X_train, Y_train, X_val, Y_val, X_test, Y_test = data.get_full_data_with_noise_npy()
 
 # data augmentation via adding noises
 # X_train, Y_train = data.add_noise(X_train, Y_train)
