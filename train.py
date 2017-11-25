@@ -39,10 +39,15 @@ callbacks = [
                 embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None),
     EarlyStopping(monitor='val_loss',
                   min_delta=0,
-                  patience=30,
+                  patience=500,
                   verbose=0, mode='auto'),
 ]
-model.fit(X_train, Y_train, nb_epoch=1000, batch_size=320, validation_data=(X_val, Y_val), callbacks=callbacks)
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+sess = tf.Session(config=config)
+tf.global_variables_initializer().run(session=sess)
+
+model.fit(X_train, Y_train, nb_epoch=3000, batch_size=4096, validation_data=(X_val, Y_val), callbacks=callbacks)
 # Final evaluation of the model
 scores = model.evaluate(X_test, Y_test, verbose=0)
 model.save('model_' + name + ".model")
