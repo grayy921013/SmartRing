@@ -4,11 +4,12 @@ from keras.models import load_model
 import numpy as np
 import serial
 import threading
+import config
 from keras.preprocessing import sequence
 
 model_name = 'model_default.model'
 
-ser = serial.Serial('/dev/cu.usbmodem1421', 9600)
+ser = serial.Serial(config.port, 9600)
 class WorkerThread(threading.Thread):
     def __init__(self):
         super(WorkerThread, self).__init__()
@@ -39,7 +40,8 @@ class WorkerThread(threading.Thread):
 
     def clear(self):
         with self.lock:
-            del self.x[:]
+            #del self.x[:]
+            self.x = []
 
     def get_array(self):
         with self.lock:
@@ -60,5 +62,7 @@ while True:
     print(X_test)
     res = model.predict_classes(X_test, batch_size=config.batch_size, verbose=0)
     print(res[0])
+    prob = model.predict_proba(X_test)
+    print(prob)
     t.clear()
 
