@@ -74,9 +74,7 @@ def print_data():
         data = ser.readline().decode("utf-8")
         print(data)
 
-
-
 if __name__ == '__main__':
     ser = serial.Serial(config.port, 9600)
-    #work(ser)
-    print_data()
+    work(ser)
+    #print_data()
