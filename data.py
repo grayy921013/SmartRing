@@ -17,6 +17,7 @@ def get_raw_input():
                 y[i] = 1
                 Y.append(y)
             except:
+                print(str(i) + file.title())
                 print("data corruption")
     X = numpy.asarray(X)
     Y = numpy.asarray(Y)
@@ -40,6 +41,26 @@ def get_new_input():
     Y = numpy.asarray(Y)
     return X, Y
 
+def get_calibrate_raw_input():
+    X = []
+    Y = []
+    for i in ['DOWN', 'RIGHT']:
+        files = os.listdir(str(i))
+        for file in files:
+            try:
+                X.append(numpy.loadtxt(open(str(i) + "/" + file, "rb"), delimiter=","))
+                y = numpy.zeros(2)
+                if i == 'DOWN':
+                    y[0] = 1
+                else :
+                    y[1] = 1
+                Y.append(y)
+            except:
+                print("data corruption")
+    X = numpy.asarray(X)
+    Y = numpy.asarray(Y)
+    return X, Y
+
 
 def get_from_test_folder():
     files = os.listdir('test')
@@ -52,9 +73,12 @@ def get_from_test_folder():
 
 
 def get_train_test():
-    X, Y = get_raw_input()
-    X = sequence.pad_sequences(X, maxlen=config.max_review_length)
-    X, Y = shuffle(X, Y, random_state=0)
+    get_train_test(get_raw_input, config.max_review_length)
+
+def get_train_test(get_data_method, maxlen):
+    X, Y = get_data_method()
+    X = sequence.pad_sequences(X, maxlen=maxlen)
+    X, Y = shuffle(X, Y, random_state=999)
     total_size = X.shape[0]
     train_size = int(total_size * 0.8)
     X_train = X[:train_size, :, :]
@@ -62,7 +86,6 @@ def get_train_test():
     X_test = X[train_size:, :, :]
     Y_test = Y[train_size:]
     return X_train, Y_train, X_test, Y_test
-
 
 def get_train_test_npy():
     X_train = numpy.load('X_train.npy')
@@ -162,7 +185,8 @@ def generate_full_with_noise():
             new_x = []
             index = 0
             while index < x.shape[0]:
-                noise = numpy.random.normal(0, 100, 6).astype(int)
+                noise = numpy.random.normal(0, 200, 3).astype(int)
+                noise = numpy.append(noise, numpy.random.normal(0, 30, 3).astype(int))
                 new_x.append(x[index] + noise)
                 if random.random() > 0.2:
                     # 20% possibility to repeat current data point
@@ -208,4 +232,12 @@ def get_full_data_with_noise_npy():
     Y_test = numpy.load('Y_test_full_noise.npy')
     print('use full data with noise as input')
     return X_train, Y_train, X_val, Y_val, X_test, Y_test
+
+def get_calibrate_data_npy():
+    X_train = numpy.load('./calibrate/X_train.npy')
+    X_test = numpy.load('./calibrate/X_test.npy')
+    Y_train = numpy.load('./calibrate/Y_train.npy')
+    Y_test = numpy.load('./calibrate/Y_test.npy')
+    print('use full data with noise as input')
+    return X_train, Y_train, X_test, Y_test
 

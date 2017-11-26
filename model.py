@@ -61,11 +61,6 @@ def bidirectional_model(hps):
     model.add(Dropout(hps[3]))
     model.add(Dense(10, activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
-
-    #model.add(TimeDistributed(Dense(10)))
-    #model.add(Activation('softmax'))
-    #sgd = SGD(lr=0.1, decay=1e-5, momentum=0.9, nesterov=True)
-    #model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
     return model
 
 
@@ -82,5 +77,16 @@ def multiple_rnn(hps):
     model.compile(loss='categorical_crossentropy',
                   optimizer='rmsprop',
                   metrics=['accuracy'])
+    return model
+
+
+def calibrate_rnn():
+    model = Sequential()
+    model.add(LSTM(output_dim=4, return_sequences=True,
+                            input_shape=(config.clibrate_length, 6)))
+    model.add(Dropout(0.2))
+    model.add(LSTM(20))
+    model.add(Dense(2, activation='softmax'))
+    model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
     return model
 

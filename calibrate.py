@@ -35,16 +35,16 @@ class WorkerThread(threading.Thread):
 
 
 def work(ser):
-    t = WorkerThread()
-    t.start()
+    #t = WorkerThread()
+    #t.start()
     i = 0
     stage = 'gravity'
     times = 20
     true_grav = 16384
-    grav_range = 200
+    grav_range = 500
     buf = []
     while True:
-        data = t.get_date().strip().split(',')
+        data = ser.readline().decode('utf-8').strip().split(',')
         if i % 5 == 0:
             ring_pos = ':)'
             if true_grav - grav_range > int(data[2]) < true_grav + grav_range:
@@ -53,15 +53,17 @@ def work(ser):
             i = 0
         i += 1
 
-        finished = True
         if stage == 'gravity':
             grav = int(data[2])
             buf.append(grav)
+            cnt = 0
             if len(buf) == times:
                 for g in buf:
                     if true_grav - grav_range > g < true_grav + grav_range:
-                        finished = False
-                if finished:
+                        cnt += 1
+
+                #80% in range
+                if cnt <= 4:
                     stage = '1'
                 buf = []
         elif stage == '1':

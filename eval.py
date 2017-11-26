@@ -7,8 +7,6 @@ import threading
 import config
 from keras.preprocessing import sequence
 
-model_name = 'model_default.model'
-
 ser = serial.Serial(config.port, 9600)
 class WorkerThread(threading.Thread):
     def __init__(self):
@@ -49,20 +47,25 @@ class WorkerThread(threading.Thread):
 
 t = WorkerThread()
 t.start()
-model = load_model(model_name)
 
-while True:
-    input(" ready? ")
-    t.collect(True)
-    input("finish?")
-    t.collect(False)
-    X_test = t.get_array()
-    print(X_test)
-    X_test = sequence.pad_sequences(X_test, maxlen=config.max_review_length)
-    print(X_test)
-    res = model.predict_classes(X_test, batch_size=config.batch_size, verbose=0)
-    print(res[0])
-    prob = model.predict_proba(X_test)
-    print(prob)
-    t.clear()
 
+def do_eval(model_name='model_default.model', maxlen=config.max_review_length):
+    model = load_model(model_name)
+    while True:
+        input(" ready? ")
+        t.collect(True)
+        input("finish?")
+        t.collect(False)
+        X_test = t.get_array()
+        print(X_test)
+        X_test = sequence.pad_sequences(X_test, maxlen=maxlen)
+        print(X_test)
+        res = model.predict_classes(X_test, batch_size=config.batch_size, verbose=0)
+        print(res[0])
+        prob = model.predict_proba(X_test)
+        print(prob)
+        t.clear()
+
+if __name__ == '__main__':
+    #do_eval()
+    do_eval(model_name='./calibrate/model_50.model', maxlen=config.clibrate_length)
