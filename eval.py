@@ -49,7 +49,7 @@ t = WorkerThread()
 t.start()
 
 
-def do_eval(model_name='model_default.model', maxlen=config.max_review_length):
+def do_eval(model_name='model_default.new.model', maxlen=config.max_review_length):
     model = load_model(model_name)
     while True:
         input(" ready? ")
@@ -67,5 +67,5 @@ def do_eval(model_name='model_default.model', maxlen=config.max_review_length):
         t.clear()
 
 if __name__ == '__main__':
-    #do_eval()
-    do_eval(model_name='./calibrate/model_50.model', maxlen=config.clibrate_length)
+    do_eval()
+    #do_eval(model_name='./calibrate/model_50.model', maxlen=config.clibrate_length)
