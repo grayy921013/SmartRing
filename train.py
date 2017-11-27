@@ -48,7 +48,7 @@ config.gpu_options.per_process_gpu_memory_fraction = 0.1
 sess = tf.Session(config=config)
 tf.global_variables_initializer().run(session=sess)
 
-model.fit(X_train, Y_train, nb_epoch=3000, batch_size=4096, validation_data=(X_val, Y_val), callbacks=callbacks)
+model.fit(X_train, Y_train, nb_epoch=4000, batch_size=1024, validation_data=(X_val, Y_val), callbacks=callbacks)
 # Final evaluation of the model
 scores = model.evaluate(X_test, Y_test, verbose=0)
 model.save('model_' + name + ".model")
