@@ -62,14 +62,23 @@ def get_calibrate_raw_input():
     return X, Y
 
 
-def get_from_test_folder():
-    files = os.listdir('test')
+def get_from_folder(dir):
     X = []
-    for file in files:
-        X.append(numpy.loadtxt(open("test/" + file, "rb"), delimiter=","))
-    X = numpy.asarray(X)
-    X = sequence.pad_sequences(X, maxlen=config.max_review_length)
-    return X,
+    Y = []
+    for i in range(0, 10):
+        files = os.listdir(dir + "/" + str(i))
+        for file in files:
+            try:
+                X.append(numpy.loadtxt(open(dir + "/" + str(i) + "/" + file, "rb"), delimiter=","))
+                y = numpy.zeros(10)
+                y[i] = 1
+                Y.append(y)
+            except:
+                print(str(i) + file.title())
+                print("data corruption")
+    X = numpy.asarray(sequence.pad_sequences(X, maxlen=config.max_review_length))
+    Y = numpy.asarray(Y)
+    return X, Y
 
 
 def get_train_test():
