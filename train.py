@@ -39,7 +39,7 @@ callbacks = [
                 embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None),
     EarlyStopping(monitor='val_loss',
                   min_delta=0,
-                  patience=500,
+                  patience=300,
                   verbose=0, mode='auto'),
 ]
 config = tf.ConfigProto()
